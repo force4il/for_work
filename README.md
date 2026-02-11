@@ -1,1 +1,1 @@
-its repository uses for testing
+it repository uses for testing
