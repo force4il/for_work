@@ -1,0 +1,31 @@
+profile: all
+
+skips:
+  - B101
+  - B201
+  - B110
+
+exclude_dirs:
+  - main.cpp
+  - config.py
+  - rust
+
+tests:
+  - B608
+  - B611
+  - B105
+  - B106
+  - B107
+  - B501
+
+severity:
+  - high
+  - medium
+  - low
+
+confidence:
+  - high
+  - medium
+  - low
+
+format: txt
