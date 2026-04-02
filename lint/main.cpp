@@ -1,101 +1,99 @@
-// cppcheck --suppress=missingIncludeSystem main.cpp
-// cppcheck -q --enable=all --inconclusive main.cpp
 #include <iostream>
-#include <memory>
+#include <cstring>
 
-struct object {
-    int data;
-    std::shared_ptr<object> next;
-};
+// valgrind --leak-check=full ./some
 
-using shared_obj_ptr = std::shared_ptr<object>;
-using std::cin;
 using std::cout;
 using std::endl;
-using std::make_shared;
+using std::cin;
 
-void push_back(shared_obj_ptr &head, shared_obj_ptr &tail, int data) {
-    shared_obj_ptr obj = make_shared<object>();
-    obj->data = data;
-    if (head == nullptr) {
-        head = obj;
-    } else if (tail != nullptr) {
-        tail->next = obj;
-    }
-    tail = obj;
-}
-
-void pop_front(shared_obj_ptr &head, shared_obj_ptr &tail) {
-    if (head == nullptr) return;
-    if (head == tail) {
-        head.reset();
-        tail.reset();
-        return;
-    }
-    head = head->next; 
-}
-
-void show(const shared_obj_ptr &head) {
-    shared_obj_ptr cur = head;
-    while (cur != nullptr) {
-        cout << cur->data << " ";
-        cur = cur->next;
-    }
-}
-
-void insert(shared_obj_ptr &head, shared_obj_ptr &tail, const shared_obj_ptr &prev, int data) {
-    shared_obj_ptr obj = make_shared<object>();
-    obj->data = data;
-
-    if (prev == nullptr) {
-        obj->next = head;
-        head = obj;
-        if (tail == nullptr) {
-            tail = obj;
+class Test {
+private:
+    int* data_;   
+    int size_;      
+    
+public:
+    Test(int n) : size_(n) {
+        data_ = new int[n];
+        for (int i = 0; i < n; i++){
+            data_[i] = i * 10;
         }
-        return;
+    }
+    
+    Test(const Test& test) : size_(test.size_) {
+        data_ = new int[size_];
+        for (int i = 0; i < size_; i++) {
+            data_[i] = test.data_[i];
+        }
     }
 
-    obj->next = prev->next;
-    prev->next = obj;
-
-    if (prev == tail) {
-        tail = obj;
+    ~Test() {
+        delete[] data_; 
     }
-}
-
-int capacity(const shared_obj_ptr &head) {
-    int cnt = 0;
-    shared_obj_ptr cur = head;
-    while (cur != nullptr) {
-        cnt++;
-        cur = cur->next;
+    
+    Test& operator=(const Test& test) {
+        if (this == &test) return *this;
+        
+        delete[] data_; 
+        
+        size_ = test.size_;
+        data_ = new int[size_];
+        for (int i = 0; i < size_; i++) {
+            data_[i] = test.data_[i];
+        }
+    
+        return *this;
     }
-
-    return cnt;
-}
+    
+    void getData() {
+        for (int i = 0; i < size_; i++) {
+            cout << data_[i] << " ";
+        }
+        putchar('\n');
+    }
+    
+    void setData(int index, int value) {
+        if (index >= 0 && index < size_) {
+            data_[index] = value;
+        } else {
+            cout << "IndexError" << endl;
+        }
+    }
+};
 
 int main() {
-    shared_obj_ptr head = nullptr, tail = nullptr;
-    push_back(head, tail, 1);
-    push_back(head, tail, 2);
-    push_back(head, tail, 3);
-    push_back(head, tail, 4);
-    pop_front(head, tail);
+    Test buf1(5);
+    cout << "buf1: ";
+    buf1.getData();
+    
+    Test buf2 = buf1; 
+    cout << "buf2: ";
+    buf2.getData();
+    
+    cout << "After setData 999" << endl;
+    buf1.setData(0, 999);
+    cout << "buf1: ";
+    buf1.getData();
+    cout << "buf2: ";
+    buf2.getData();
+    
+    Test buf3(2);
+    buf3 = buf1;
+    cout << "buf3: ";
+    buf3.getData();
 
-    cout << "Current size: " << capacity(head) << endl;
-
-    shared_obj_ptr cur = head;
-    while (cur != nullptr && cur->data != 2) {
-        cur = cur->next;
+    int n {0};
+    cout << "Enter array size_: ";
+    cin >> n;
+    if (n <= 0) {
+        cout << "SizeError" << endl;
+        return -1;
+    } else {
+        Test buf4(n);
+        buf4.getData();
     }
 
-    if (cur != nullptr) {
-        insert(head, tail, cur, 77);
-    }
-
-    show(head);
-    cout << endl;
+    cout << "End of programm" << endl; 
 
     return 0;
 }
