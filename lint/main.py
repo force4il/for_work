@@ -1,5 +1,8 @@
 import sqlite3
 
+# sudo snap install ruff
+# ruff check --select S608 your_script.py
+
 with sqlite3.connect('test.db') as conn:
     cursor = conn.cursor()
     cursor.execute('''
