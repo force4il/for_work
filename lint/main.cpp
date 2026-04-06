@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstring>
 
-// valgrind --leak-check=full ./some
+// valgrind --leak-check=full ./exe
 
 using std::cout;
 using std::endl;
