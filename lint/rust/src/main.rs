@@ -1,4 +1,7 @@
 use std::io::{self, Write};
+use std::mem;
+
+// valgrind --leak-check=full ./target/release/my_app
 
 fn main() {
     println!("Калькулятор\n");
@@ -61,6 +64,9 @@ fn main() {
             }
         };
         
+        let data = vec![1, 2, 3, 4, 5];
+        mem::forget(data);
+
         println!("Результат: {} {} {} = {}", a, op, b, result);
     }
 }
