@@ -1,5 +1,5 @@
-use std::io::{self, Write};
-use std::mem;
+use std::io::{self};
+// use std::mem;
 
 // valgrind --leak-check=full ./target/release/my_app
 
@@ -10,9 +10,6 @@ fn main() {
     println!("Введите 'exit' для выхода");
     
     loop {
-        print!("> ");
-        io::stdout().flush().unwrap();
-        
         let mut input = String::new();
         io::stdin().read_line(&mut input).unwrap();
         let input = input.trim();
@@ -64,8 +61,8 @@ fn main() {
             }
         };
         
-        let data = vec![1, 2, 3, 4, 5];
-        mem::forget(data);
+        // let data = vec![1, 2, 3, 4, 5];
+        // mem::forget(data);
 
         println!("Результат: {} {} {} = {}", a, op, b, result);
     }

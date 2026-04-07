@@ -27,9 +27,9 @@ public:
     Test(const Test& test) : Test(test.size_) 
     {}
 
-    ~Test() {
-        delete[] data_; 
-    }
+    // ~Test() {
+    //     delete[] data_; 
+    // }
     
     Test& operator=(const Test& test) {
         if (this == &test) return *this;
