@@ -2,6 +2,7 @@
 #include <cstring>
 
 // valgrind --leak-check=full ./exe
+// cppcheck --suppress=misingIncludeSystem
 
 using std::cout;
 using std::endl;
@@ -27,9 +28,9 @@ public:
     Test(const Test& test) : Test(test.size_) 
     {}
 
-    // ~Test() {
-    //     delete[] data_; 
-    // }
+    ~Test() {
+        delete[] data_; 
+    }
     
     Test& operator=(const Test& test) {
         if (this == &test) return *this;
@@ -70,37 +71,24 @@ public:
 };
 
 int main() {
-    Test buf1(5);
-    cout << "buf1: ";
-    buf1.print();
-    
-    Test buf2 = buf1; 
-    cout << "buf2: ";
-    buf2.print();
-    
-    cout << "After setData 999" << endl;
-    buf1.setData(0, 999);
-    cout << "buf1: ";
-    buf1.print();
-    cout << "buf2: ";
-    buf2.print();
-    
-    Test buf3(2);
-    buf3 = buf1;
-    cout << "buf3: ";
-    buf3.print();
-
     int n {0};
-    cout << "Enter array size_: ";
+    cout << "Enter array size: ";
     cin >> n;
+
     if (n <= 0) {
         cout << "SizeError" << endl;
         return -1;
     } else {
-        Test buf4(n);
-        buf4.print();
-        cout << buf4.getData(n - 1) << endl;
+        Test buf(n);
+        buf.print();
+        buf.setData(n - 1, 40);
+        cout << buf.getData(n - 1) << endl;
     }
+    // int arr[2];
+    // cout << arr[3] << endl; //ошибка индексации 
+
+    // int* ptr = nullptr; //обращение к нулевому указтелю
+    // cout << *ptr << endl;
 
     cout << "End of programm" << endl; 
 

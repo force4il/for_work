@@ -1,7 +1,6 @@
 use std::io::{self};
 // use std::mem;
-
-// valgrind --leak-check=full ./target/release/my_app
+// cargo clippy
 
 fn main() {
     println!("Калькулятор\n");
@@ -60,10 +59,23 @@ fn main() {
                 continue;
             }
         };
-        
-        // let data = vec![1, 2, 3, 4, 5];
-        // mem::forget(data);
 
+        // утечка
+        // let data = vec![1, 2, 3, 4];
+        // mem::forget(data); 
+
+        // индексирование
+        // let arr = [1, 2, 3, 4];
+        // println!("Num: {:?}", arr[4]);
+
+        // ошибки связанные с областью видимости
+        // let t;
+        // {
+        //     let x = 5;
+        //     t = &x;
+        // }
+        // println!("t is {}", t);
+        
         println!("Результат: {} {} {} = {}", a, op, b, result);
     }
 }
