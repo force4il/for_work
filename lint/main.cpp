@@ -25,8 +25,15 @@ public:
         }
     }
     
-    Test(const Test& test) : Test(test.size_) 
-    {}
+    Test(const Test& test) : size_(test.size_) {
+        data_ = new int[size_];
+
+        if (test.data_) {
+            for (int i = 0; i < size_; i++) {
+                data_[i] = test.data_[i];
+            }
+        }
+    }
 
     ~Test() {
         delete[] data_; 
@@ -46,6 +53,21 @@ public:
         return *this;
     }
     
+    int pop(int ind) {
+        if (ind < 0 || ind >= size_) {
+            cout << "Index error" << endl;
+            return -1;
+        }
+
+        int val = data_[ind];
+        for (int i = ind; i < size_ - 1; i++) {
+            data_[i] = data_[i + 1];
+        }
+
+        size_--;
+        return val;
+    }
+
     void print() {
         for (int i = 0; i < size_; i++) {
             cout << data_[i] << " ";
@@ -54,7 +76,8 @@ public:
     }
     
     int getData(int ind) {
-        if (ind < 0 || ind > size_) {
+        if (ind < 0 || ind >= size_) {
+            cout << "Index error" << endl;
             return -1;
         } 
 
@@ -80,6 +103,8 @@ int main() {
         return -1;
     } else {
         Test buf(n);
+        buf.print();
+        buf.pop(2);
         buf.print();
         buf.setData(n - 1, 40);
         cout << buf.getData(n - 1) << endl;
